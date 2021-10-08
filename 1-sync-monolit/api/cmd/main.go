@@ -3,29 +3,21 @@ package main
 import (
 	"context"
 	"errors"
-	"github.com/joho/godotenv"
-	_ "github.com/lib/pq"
-	"github.com/p12s/okko-video-converter/api/pkg/broker"
-	"github.com/p12s/okko-video-converter/api/pkg/handler"
-	"github.com/p12s/okko-video-converter/api/pkg/repository"
-	"github.com/p12s/okko-video-converter/api/pkg/service"
-	"github.com/sirupsen/logrus"
-	"github.com/spf13/viper"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
+	"github.com/p-12s/arch-lab/1-sync-monolit/api/pkg/handler"
+	"github.com/p-12s/arch-lab/1-sync-monolit/api/pkg/repository"
+	"github.com/p-12s/arch-lab/1-sync-monolit/api/pkg/service"
+	"github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
 )
 
-// @title Video converter API
-// @version 0.0.1
-// @description API Server for Video Application
-// @host localhost:8081
-// @BasePath /
-// @securityDefinitions.apikey ApiKeyAuth
-// @in header
-// @name Authorization
 func main() {
 	logrus.SetFormatter(new(logrus.JSONFormatter))
 	if err := initConfig(); err != nil {
@@ -51,16 +43,8 @@ func main() {
 	// инит клин (репо-сервис-хендлер)
 	repos := repository.NewRepository(db)
 	services := service.NewService(repos)
+	handlers := handler.NewHandler(services)
 
-	kafka, err := broker.NewKafka()
-	if err != nil {
-		logrus.Fatalf("❌ kafka error: %s\n", err.Error())
-	}
-	go broker.Subscribe(kafka.Consumer, repos)
-
-	handlers := handler.NewHandler(services, kafka)
-
-	// ран сервер
 	srv := new(Server)
 	go func() {
 		if err := srv.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {

@@ -5,7 +5,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
-	"github.com/p12s/okko-video-converter/api/common"
+	"github.com/p-12s/arch-lab/1-sync-monolit/api/common"
 )
 
 type UserPostgres struct {
