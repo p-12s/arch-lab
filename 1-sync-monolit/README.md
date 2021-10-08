@@ -12,7 +12,7 @@
 
 ## RESTful
 
-[Описание REST интерфейсов](http://petstore.swagger.io/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fp-12s%2Farch-labs%2F1-sync-monolit%2Fmaster%2Frest-openapi.yaml)
+[Описание REST интерфейсов](http://petstore.swagger.io/?url=https://raw.githubusercontent.com/p-12s/arch-lab/master/1-sync-monolit/rest-openapi.yaml)
 
 User Service фактически выполняет роль Оркестратора сервисов. Из-за синхронной модели взаимодействия User Service "ждет" дольше, чем надо. Потенциально можно было бы отдать ответ, как только был создан пользователь, а действия связанные с созданием карты и отсылкой почты - асинхронно. 
 

@@ -77,7 +77,6 @@ func initConfig() error {
 // Server - сервер
 type Server struct {
 	httpServer *http.Server
-	kafka      *broker.Kafka
 	doneC      chan struct{}
 	closeC     chan struct{}
 }

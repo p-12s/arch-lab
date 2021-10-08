@@ -1,3 +1,14 @@
-module github.com/p-12s/arch-lab/1-sync-monolit
+module github.com/p-12s/arch-lab/1-sync-monolit/api
 
 go 1.16
+
+require (
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/gin-gonic/gin v1.7.4
+	github.com/google/uuid v1.3.0
+	github.com/jmoiron/sqlx v1.3.4
+	github.com/joho/godotenv v1.4.0
+	github.com/lib/pq v1.10.3
+	github.com/sirupsen/logrus v1.8.1
+	github.com/spf13/viper v1.9.0
+)
