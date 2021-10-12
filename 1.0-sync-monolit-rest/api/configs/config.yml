@@ -1,0 +1,10 @@
+port: "8081"
+
+db:
+  driver: "postgres"
+  username: "postgres"
+  host: "localhost"
+  #host: "db"
+  port: "5432"
+  dbname: "sync-monolit"
+  sslmode: "disable"
