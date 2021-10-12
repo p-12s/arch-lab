@@ -1,22 +1,13 @@
-# Ручной запуск контейнера с БД
+# БД пусть будет отдельно (в моем случае - на локале)
 ### При запуске сервиса в docker-compose/swarm это делать не нужно
-  
-Запуск контейнера с postgresql (для простоты MVP база в нем):
-```
-docker pull postgres
-docker run --name=ispring-todo-api -e POSTGRES_PASSWORD='qwerty' -p 5432:5432 -d --rm postgres
-docker exec -it PID /bin/bash
-```
+
 Запускаем миграции:
 ```
-migrate -path ./schema -database 'postgres://postgres:qwerty@localhost:5432/video?sslmode=disable' up
+migrate -path ./schema -database 'postgres://postgres:qwerty@localhost:5432/sync-monolit?sslmode=disable' up
 # вместо up -> down, если что-то пошло не так
 ```
-В контейнере можно убедиться, что БД с таблицами созданы:
+Можно убедиться, что БД с таблицами созданы:
 ```
-docker ps
-docker exec -it PID /bin/bash
-
 psql -U postgres
 \d
 select * from users;

@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 )
 
 /*
@@ -44,28 +43,28 @@ func (h *Handler) userIdentity(c *gin.Context) {
 
 	// чтобы каждый раз не ходить в БД за id пользователя по его коду -
 	// в userCtx будем держать его uuid код
-	userCode, err := h.services.User.ParseToken(headerParts[1])
+	userId, err := h.services.Authorization.ParseToken(headerParts[1])
 	if err != nil {
 		NewErrorResponse(c, http.StatusUnauthorized, err.Error())
 		return
 	}
 
-	c.Set(userCtx, userCode)
+	c.Set(userCtx, userId)
 }
 
-// getUserCode - получение UserCode из контекста
-func getUserCode(c *gin.Context) (string, error) {
-	code, ok := c.Get(userCtx)
+// getUserId - получение UserId из контекста
+func getUserId(c *gin.Context) (int, error) {
+	id, ok := c.Get(userCtx)
 	if !ok {
-		NewErrorResponse(c, http.StatusInternalServerError, "user code not found")
-		return "", errors.New("user code not found")
+		NewErrorResponse(c, http.StatusInternalServerError, "user id not found")
+		return 0, errors.New("user id not found")
 	}
 
-	userCodeString, ok := code.(uuid.UUID)
+	idInt, ok := id.(int)
 	if !ok {
-		NewErrorResponse(c, http.StatusInternalServerError, "user code is of invalid type")
-		return "", errors.New("user code is of invalid type")
+		NewErrorResponse(c, http.StatusInternalServerError, "user id is of invalid type")
+		return 0, errors.New("user id is of invalid type")
 	}
 
-	return userCodeString.String(), nil
+	return idInt, nil
 }

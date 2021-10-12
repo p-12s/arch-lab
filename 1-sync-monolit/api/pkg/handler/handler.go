@@ -18,11 +18,26 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	router.MaxMultipartMemory = 1 << 20 // 1 MiB (default is 32 MiB)
 
 	router.GET("/health", h.health)
-	router.POST("/api/registerUser", h.registerUser)
 
-	api := router.Group("/api/v1", h.userIdentity)
+	auth := router.Group("/auth")
 	{
-		api.GET("/files", h.health)
+		auth.POST("/sign-up", h.signUp)
+		auth.POST("/sign-in", h.signIn)
+	}
+
+	users := router.Group("/user", h.userIdentity)
+	{
+		users.GET("/", h.getMe)
+	}
+
+	loyalty := router.Group("/loyalty", h.userIdentity)
+	{
+		loyalty.POST("/create_user_card", h.createCard)
+	}
+
+	notification := router.Group("/notification", h.userIdentity)
+	{
+		notification.POST("/send_email", h.sendEmail)
 	}
 
 	return router

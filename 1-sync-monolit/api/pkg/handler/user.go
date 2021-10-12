@@ -6,26 +6,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (h *Handler) registerUser(c *gin.Context) {
-	// code - uuid-код созданного пользователя
-
-	// возвр юид код
-	userCode, err := h.services.CreateUser()
+func (h *Handler) getMe(c *gin.Context) {
+	userId, err := getUserId(c)
 	if err != nil {
 		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	// по коду генерир токен
-	token, err := h.services.User.GenerateToken(userCode)
+	user, err := h.services.User.GetById(userId)
 	if err != nil {
 		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	// отдаем
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"token": token,
-	})
-
+	c.JSON(http.StatusOK, user)
 }

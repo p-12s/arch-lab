@@ -1,0 +1,10 @@
+package common
+
+type NotificationProgramType int
+
+const (
+	NOTIFICATION_PROGRAM_UNKNOWN NotificationProgramType = iota
+	NOTIFICATION_PROGRAM_EMAIL
+	NOTIFICATION_PROGRAM_SMS
+	NOTIFICATION_PROGRAM_TELEGRAM
+)
